@@ -117,7 +117,6 @@ public class Configuration {
     @Parameter(value = "node_name")
     private String datanodeNodeName;
 
-
     @Documentation("Comma separated list of opensearch nodes that are eligible as manager nodes.")
     @Parameter(value = "initial_cluster_manager_nodes")
     private String initialClusterManagerNodes;
@@ -237,7 +236,9 @@ public class Configuration {
     @Parameter(value = "http_enable_tls")
     private boolean httpEnableTls = false;
 
-
+    @Parameter(value = "single_node_only")
+    private boolean singleNodeOnly = false;
+    
     @Documentation(visible = false, value = "Classes considered safe to load by name. A set of prefixes matched against the fully qualified class name.")
     @Parameter(value = org.graylog2.Configuration.SAFE_CLASSES, converter = StringSetConverter.class, validators = SafeClassesValidator.class)
     private Set<String> safeClasses = Set.of("org.graylog.", "org.graylog2.");
@@ -296,6 +297,10 @@ public class Configuration {
 
     public Integer getIndicesQueryBoolMaxClauseCount() {
         return indicesQueryBoolMaxClauseCount;
+    }
+    
+    public boolean isSingleNodeOnly() {
+        return singleNodeOnly;
     }
 
     @Documentation("Configures verbosity of embedded opensearch logs. Possible values OFF, FATAL, ERROR, WARN, INFO, DEBUG, and TRACE, default is INFO")

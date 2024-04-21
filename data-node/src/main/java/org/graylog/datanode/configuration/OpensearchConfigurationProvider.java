@@ -125,6 +125,7 @@ public class OpensearchConfigurationProvider implements Provider<OpensearchConfi
                     localConfiguration.getNodeSearchCacheSize(),
                     opensearchProperties.build()
             );
+            
         } catch (GeneralSecurityException | KeyStoreStorageException | IOException e) {
             throw new OpensearchConfigurationException(e);
         }
@@ -137,6 +138,12 @@ public class OpensearchConfigurationProvider implements Provider<OpensearchConfi
         config.put("path.data", datanodeConfiguration.datanodeDirectories().getDataTargetDir().toString());
         config.put("path.logs", datanodeConfiguration.datanodeDirectories().getLogsTargetDir().toString());
 
+        if (localConfiguration.isSingleNodeOnly()) {
+            config.put("discovery.type", "single-node");
+        } else {
+            config.put("cluster.initial_master_nodes", localConfiguration.getInitialManagerNodes());
+        }
+        
         config.put("network.bind_host", localConfiguration.getBindAddress());
 
         // https://opensearch.org/docs/latest/tuning-your-cluster/availability-and-recovery/snapshots/snapshot-restore/#shared-file-system
